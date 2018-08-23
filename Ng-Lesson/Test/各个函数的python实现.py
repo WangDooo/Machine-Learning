@@ -34,3 +34,13 @@ def costReg(theta, X, y, learningRate):
 	reg = (learningRate / (2*len(X))*np.sum(np.power(theta[:,1:theta.shape[1]],2)))
 	return np.sum(first - second) / (len(X)) + reg
 
+# 梯度检验 检验反向传播的量级是否正确 【gradApprox 与 Dvec(反向传播得到的对theta的偏导)】的比较
+# 因为在反向传播中会存在一些bug 
+# 此检验程序运算量大耗时 检验过后需turn off
+def CompareGradApproxWithDvec(theta, EPSILON):
+	for i in range(n):
+		thetaPlus = theta
+		thetaPlus[i] = thetaPlus[i] + EPSILON
+		thetaMinus = theta
+		thetaMinus[i] = thetaMinus[i] + EPSILON
+		gradApprox[i] = (J(thetaPlus) - J(thetaMinus)) / (2*EPSILON) # J()代价函数
