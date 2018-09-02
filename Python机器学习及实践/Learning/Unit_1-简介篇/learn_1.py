@@ -28,7 +28,7 @@ plt.ylabel('Cell Size')
 from sklearn.linear_model import LogisticRegression
 lr = LogisticRegression()
 # 使用前10条训练样本学习直线的系数和截距
-lr.fit(df_train[['Clump Thickness','Cell Size']][:300],df_train['Type'][:300])
+lr.fit(df_train[['Clump Thickness','Cell Size']][:30],df_train['Type'][:30])
 print('Testing accuracy(10 training samples):',lr.score(df_test[['Clump Thickness','Cell Size']],df_test['Type']))
 
 intercept = lr.intercept_
