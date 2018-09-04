@@ -60,7 +60,6 @@
 #================================================================
 # 支持向量机 手写体数据分析
 #----------------------------------------------------------------
-
 from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
