@@ -1,5 +1,0 @@
-Hemant Kumar Mehtas 科学计算基础 18.8.21
-
-NumPy SciPy SymPy IPython matplotlib pandas
-
-书籍文档资料
