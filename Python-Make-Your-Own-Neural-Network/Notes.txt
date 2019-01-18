@@ -1,0 +1,5 @@
+Make your own neural network Tariq Rashid
+2019-01-18
+The error is used to guide how we adjust the link weights to improve the overall answer given by the neural network.
+
+Remember the weights are changed in a direction opposite to the gradient.
