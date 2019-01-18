@@ -29,12 +29,12 @@ class neuralNetwork:
 		targets = np.array(targets_list, ndmin=2).T
 
 		# calculate signals into hidden layer
-		hidden_inputs = numpy.dot(self.wih, inputs)
+		hidden_inputs = np.dot(self.wih, inputs)
 		# calculate the signals emerging from hidden layer
 		hidden_outputs = self.activation_function(hidden_inputs)
 
 		# calculate signals into final output layer
-		final_inputs = numpy.dot(self.who, hidden_outputs)
+		final_inputs = np.dot(self.who, hidden_outputs)
 		# calculate the signals emerging from final output layer
 		final_outputs = self.activation_function(final_inputs)
 		
@@ -69,19 +69,45 @@ class neuralNetwork:
 
 
 # number of input, hidden and output nodes
-input_nodes = 3
-hidden_nodes = 3
-output_nodes = 3
+input_nodes = 784
+hidden_nodes = 100
+output_nodes = 10
 # learning rate
 learning_rate = 0.3
 # create instance of neural network
 n = neuralNetwork(input_nodes,hidden_nodes,output_nodes,learning_rate)
-print(n.query([1,0.5,-1.5]))
 
-data_file = open("mnist_dataset/mnist_train_100.csv",'r')
-data_list = data_file.readlines()
-data_file.close()
-all_values = data_list[0].split(',')
-image_array = np.asfarray(all_values[1:]).reshape((28,28))
+# load the mnist training data CSV file into a list
+training_data_file = open("mnist_dataset/mnist_train_100.csv",'r')
+# training_data_file = open("F:/Books/《Python神经网络编程》中文版PDF+英文版PDF+源代码/makeyourownneuralnetwork源代码r/makeyourownneuralnetwork-master/mnist_dataset/mnist_train.csv",'r')
+training_data_list = training_data_file.readlines()
+training_data_file.close()
+
+# train the neural network
+	# Test
+	# image_array = np.asfarray(all_values[1:]).reshape((28,28))
+	# plt.imshow(image_array, cmap='Greys', interpolation='None')
+# go through all records in the training data set
+for record in training_data_list:
+	all_values = record.split(',')
+	# scale and shift the inputs
+	inputs = (np.asfarray(all_values[1:])/255.0*0.99)+0.01
+	# create the target output values (all 0.01, except the desired label which is 0.99)
+	targets = np.zeros(output_nodes) + 0.01
+	targets[int(all_values[0])] = 0.99
+	n.train(inputs,targets)
+	pass
+
+
+# load the mnist test data CSV file into a list
+test_data_file = open("mnist_dataset/mnist_test_10.csv",'r')
+test_data_list = test_data_file.readlines()
+test_data_file.close()
+
+# Test
+test_values = test_data_list[0].split(',')
+print(test_values[0])
+image_array = np.asfarray(test_values[1:]).reshape((28,28))
 plt.imshow(image_array, cmap='Greys', interpolation='None')
 plt.show()
+print(n.query((np.asfarray(test_values[1:])/255.0*0.99)+0.01))

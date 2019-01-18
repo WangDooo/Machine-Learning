@@ -3,3 +3,6 @@ Make your own neural network Tariq Rashid
 The error is used to guide how we adjust the link weights to improve the overall answer given by the neural network.
 
 Remember the weights are changed in a direction opposite to the gradient.
+
+Neural networks should find features or patterns in the input which can be
+expressed in a shorter form than the input itself.
