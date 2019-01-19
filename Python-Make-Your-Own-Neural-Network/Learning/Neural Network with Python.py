@@ -73,7 +73,7 @@ input_nodes = 784
 hidden_nodes = 100
 output_nodes = 10
 # learning rate
-learning_rate = 0.3
+learning_rate = 0.2
 # create instance of neural network
 n = neuralNetwork(input_nodes,hidden_nodes,output_nodes,learning_rate)
 
@@ -100,14 +100,43 @@ for record in training_data_list:
 
 
 # load the mnist test data CSV file into a list
-test_data_file = open("mnist_dataset/mnist_test_10.csv",'r')
+test_data_file = open("F:/Books/《Python神经网络编程》中文版PDF+英文版PDF+源代码/makeyourownneuralnetwork源代码r/makeyourownneuralnetwork-master/mnist_dataset/mnist_test.csv",'r')
+# test_data_file = open("mnist_dataset/mnist_test_10.csv",'r')
 test_data_list = test_data_file.readlines()
 test_data_file.close()
 
 # Test
-test_values = test_data_list[0].split(',')
-print(test_values[0])
-image_array = np.asfarray(test_values[1:]).reshape((28,28))
-plt.imshow(image_array, cmap='Greys', interpolation='None')
-plt.show()
-print(n.query((np.asfarray(test_values[1:])/255.0*0.99)+0.01))
+# test_values = test_data_list[0].split(',')
+# print(test_values[0])
+# image_array = np.asfarray(test_values[1:]).reshape((28,28))
+# plt.imshow(image_array, cmap='Greys', interpolation='None')
+# plt.show()
+# print(n.query((np.asfarray(test_values[1:])/255.0*0.99)+0.01))
+
+# test the neural network
+
+# scorecard for how well the networl performs, initially empty
+scorecard = []
+
+# go through all the records in the test data set
+for record in test_data_list:
+	all_values = record.split(',')
+	correct_label = int(all_values[0])
+	# print("correct_label:",correct_label)
+	# scale and shift the inputs
+	inputs = (np.asfarray(all_values[1:])/255.0*0.99)+0.01
+	# query the network
+	outputs = n.query(inputs)
+	# the index of the highest value corresponds to the label
+	label = np.argmax(outputs)
+	# print("answer:",label)
+	# append correct or incorrect to list
+	if(label == correct_label):
+		scorecard.append(1)
+	else:
+		scorecard.append(0)
+		pass
+
+# print(scorecard)
+scorecard_array = np.asarray(scorecard)
+print("performance = ",scorecard_array.sum()/scorecard_array.size)
