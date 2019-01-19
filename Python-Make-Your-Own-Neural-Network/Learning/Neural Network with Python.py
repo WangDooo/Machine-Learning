@@ -1,3 +1,5 @@
+# code for a 3-layer neural network, and code for learning the MNIST dataset
+
 import numpy as np
 # scipy.special for the sigmoid function expit()
 import scipy.special
@@ -70,7 +72,7 @@ class neuralNetwork:
 
 # number of input, hidden and output nodes
 input_nodes = 784
-hidden_nodes = 100
+hidden_nodes = 200
 output_nodes = 10
 # learning rate
 learning_rate = 0.2
@@ -88,15 +90,6 @@ training_data_file.close()
 	# image_array = np.asfarray(all_values[1:]).reshape((28,28))
 	# plt.imshow(image_array, cmap='Greys', interpolation='None')
 # go through all records in the training data set
-for record in training_data_list:
-	all_values = record.split(',')
-	# scale and shift the inputs
-	inputs = (np.asfarray(all_values[1:])/255.0*0.99)+0.01
-	# create the target output values (all 0.01, except the desired label which is 0.99)
-	targets = np.zeros(output_nodes) + 0.01
-	targets[int(all_values[0])] = 0.99
-	n.train(inputs,targets)
-	pass
 
 
 # load the mnist test data CSV file into a list
@@ -113,11 +106,24 @@ test_data_file.close()
 # plt.show()
 # print(n.query((np.asfarray(test_values[1:])/255.0*0.99)+0.01))
 
-# test the neural network
 
+# epochs is the number of times the training data set is used for training
+epochs = 5
+
+for e in range(epochs):
+	for record in training_data_list:
+		all_values = record.split(',')
+		# scale and shift the inputs
+		inputs = (np.asfarray(all_values[1:])/255.0*0.99)+0.01
+		# create the target output values (all 0.01, except the desired label which is 0.99)
+		targets = np.zeros(output_nodes) + 0.01
+		targets[int(all_values[0])] = 0.99
+		n.train(inputs,targets)
+		pass
+
+# test the neural network
 # scorecard for how well the networl performs, initially empty
 scorecard = []
-
 # go through all the records in the test data set
 for record in test_data_list:
 	all_values = record.split(',')
@@ -140,3 +146,6 @@ for record in test_data_list:
 # print(scorecard)
 scorecard_array = np.asarray(scorecard)
 print("performance = ",scorecard_array.sum()/scorecard_array.size)
+
+
+
