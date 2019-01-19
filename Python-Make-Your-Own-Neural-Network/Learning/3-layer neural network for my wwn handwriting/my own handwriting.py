@@ -1,6 +1,8 @@
 import numpy as np
 import scipy.special
 import matplotlib.pyplot as plt
+import scipy.misc
+from PIL import Image
 
 # nerual network class definition
 class neuralNetwork:
@@ -119,30 +121,49 @@ test_data_file.close()
 
 # n.save_weights()
 
+
+# n.load_weights()
+# # test the neural network
+# scorecard = []
+# # go through all the records in the test data set
+# for record in test_data_list:
+# 	all_values = record.split(',')
+# 	correct_label = int(all_values[0])
+# 	# print("correct_label:",correct_label)
+# 	# scale and shift the inputs
+# 	inputs = (np.asfarray(all_values[1:])/255.0*0.99)+0.01
+# 	# query the network
+# 	outputs = n.query(inputs)
+# 	# the index of the highest value corresponds to the label
+# 	label = np.argmax(outputs)
+# 	# print("answer:",label)
+# 	# append correct or incorrect to list
+# 	if(label == correct_label):
+# 		scorecard.append(1)
+# 	else:
+# 		scorecard.append(0)
+# 		pass
+# # print(scorecard)
+# scorecard_array = np.asarray(scorecard)
+# print("performance = ",scorecard_array.sum()/scorecard_array.size)
+
+file = 'test_5.png'
+new_file = 'new'+ file
+img = Image.open(file)
+try:
+	new_img = img.resize((28,28),Image.BILINEAR)   
+	new_img.save(new_file)
+except Exception as e:
+	print(e)
+
+img_array = scipy.misc.imread(new_file, flatten=True)
+
+img_data = 255.0 - img_array.reshape(784)
+img_data = (img_data/255.0*0.99)+0.01
+
 n.load_weights()
-# test the neural network
-scorecard = []
-# go through all the records in the test data set
-for record in test_data_list:
-	all_values = record.split(',')
-	correct_label = int(all_values[0])
-	# print("correct_label:",correct_label)
-	# scale and shift the inputs
-	inputs = (np.asfarray(all_values[1:])/255.0*0.99)+0.01
-	# query the network
-	outputs = n.query(inputs)
-	# the index of the highest value corresponds to the label
-	label = np.argmax(outputs)
-	# print("answer:",label)
-	# append correct or incorrect to list
-	if(label == correct_label):
-		scorecard.append(1)
-	else:
-		scorecard.append(0)
-		pass
-# print(scorecard)
-scorecard_array = np.asarray(scorecard)
-print("performance = ",scorecard_array.sum()/scorecard_array.size)
-
-
-
+inputs = np.asfarray(img_data)
+outputs = n.query(inputs)
+print(outputs)
+label = np.argmax(outputs)
+print("answer = ", label)
